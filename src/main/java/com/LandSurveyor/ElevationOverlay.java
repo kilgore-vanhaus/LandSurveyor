@@ -29,6 +29,8 @@ public class ElevationOverlay extends Overlay {
     @Override
     public Dimension render(Graphics2D graphics)
     {
+        csvExport.updateWritingState(config.writeToFile());
+
         if (client.getLocalPlayer() == null)
         {
             return null;
@@ -53,6 +55,8 @@ public class ElevationOverlay extends Overlay {
                     continue;
 
                 int height = -Perspective.getTileHeight(client, lp, plane);
+
+                csvExport.writeTile(x, y, height);
 
                 // Draw filled tile if mode is TILE or BOTH
                 if (config.hypsometricMode() == HypsometricMode.TILE || config.hypsometricMode() == HypsometricMode.BOTH)
@@ -99,7 +103,7 @@ public class ElevationOverlay extends Overlay {
     private Color getColorForHeight(int height)
     {
         final int min = 0;
-        final int max = 500;
+        final int max = 1000;
 
         int clamped = Math.max(min, Math.min(max, height));
         float ratio = (float)(clamped - min) / (max - min);
