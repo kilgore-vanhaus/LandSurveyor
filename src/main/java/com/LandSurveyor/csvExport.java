@@ -6,6 +6,9 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class csvExport {
     private final static String PATH = RuneLite.RUNELITE_DIR + "//landSurveyor//";
@@ -17,6 +20,8 @@ public class csvExport {
 
     /// Cache to prevent duplicates: key = "x,y", value = elevation
     private static final Map<String, Integer> tileCache = new HashMap<>();
+
+    private static final Logger logger = Logger.getLogger(csvExport.class.getName());
 
     public static void updateWritingState(boolean writeToFile)
     {
@@ -54,7 +59,7 @@ public class csvExport {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to start new CSV file", e);
             stopCsv();
         }
     }
@@ -72,7 +77,7 @@ public class csvExport {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error while closing CSV writer", e);
         }
         finally
         {
@@ -121,7 +126,7 @@ public class csvExport {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error writing tile to CSV", e);
         }
     }
 
@@ -147,7 +152,7 @@ public class csvExport {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error rewriting CSV file", e);
         }
     }
 }
